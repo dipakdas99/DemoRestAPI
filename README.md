@@ -12,7 +12,7 @@
 ## What You Will Need?
 
 - Java 8
-- Eclipse
+- Eclipse/STS
 - Maven
 - Embedded Tomcat
 - Postman REST Services Client
