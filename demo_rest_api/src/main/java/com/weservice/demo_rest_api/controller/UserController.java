@@ -2,10 +2,12 @@ package com.weservice.demo_rest_api.controller;
 
 import java.net.URI;
 import java.util.List;
-
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +34,18 @@ public class UserController {
 	}
 
 	@GetMapping("/user/{id}")
-	public UserBean retieveOne(@PathVariable int id) {
+	public Resource<UserBean> retieveOne(@PathVariable int id) {
 		//find individual user
 		UserBean user = userDaoService.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException("id: "+id);
-		return user;
+		
+		//HATEOAS
+		//to send additional link with main link
+		Resource<UserBean> resource = new Resource<UserBean>(user);
+		ControllerLinkBuilder linkto = linkTo(methodOn(this.getClass()).retrieveAllUser());
+		resource.add(linkto.withRel("all-users"));
+		return resource;
 	}
 
 	@PostMapping("/user")

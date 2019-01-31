@@ -5,14 +5,20 @@ import java.util.Date;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Validation for all users")
 public class UserBean {
 	
 	private Integer id;
 	
 	@Size(min = 2, message = "Name should contains minimum 2 characters")
+	@ApiModelProperty(notes = "Name should contains minimum 2 characters")
 	private String name;
 	
 	@Past
+	@ApiModelProperty(notes = "Birthdate should not be in future")
 	private Date birthDate;
 	
 	protected UserBean() {
